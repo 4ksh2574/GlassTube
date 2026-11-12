@@ -27,15 +27,15 @@ jobs:
       - name: Install Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "8.14.4"
+          gradle-version: "9.3.1"
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
           packages: platform-tools
 
-      - name: Install Android 16 SDK
-        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - name: Install Android 17 SDK
+        run: sdkmanager "platforms;android-37" "build-tools;36.0.0"
 
       - name: Build debug APK
         env:
