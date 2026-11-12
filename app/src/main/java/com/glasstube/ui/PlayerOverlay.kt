@@ -7,6 +7,7 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -101,7 +102,7 @@ fun PlayerOverlay(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 12.dp)
-                    .height(220.dp)
+                    .aspectRatio(16f / 9f)
                     .clip(RoundedCornerShape(24.dp)),
                 factory = { context ->
                     WebView(context).apply {
