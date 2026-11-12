@@ -35,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,6 +59,8 @@ import com.glasstube.data.SavedVideosStore
 import com.glasstube.data.Video
 import com.glasstube.data.YouTubeRepository
 import kotlinx.coroutines.launch
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
 
 private enum class AppPage(val label: String) {
     Home("Home"),
@@ -70,6 +73,7 @@ fun GlassTubeApp() {
     val context = LocalContext.current
     val store = remember(context) { SavedVideosStore(context.applicationContext) }
     val scope = rememberCoroutineScope()
+    val hazeState = rememberHazeState()
 
     var page by remember { mutableStateOf(AppPage.Home) }
     var videos by remember { mutableStateOf(emptyList<Video>()) }
@@ -123,8 +127,9 @@ fun GlassTubeApp() {
     }
 
     MaterialTheme {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AmbientBackdrop()
+        CompositionLocalProvider(LocalGlassHazeState provides hazeState) {
+            Box(modifier = Modifier.fillMaxSize()) {
+            AmbientBackdrop(Modifier.fillMaxSize().hazeSource(hazeState))
 
             Column(
                 modifier = Modifier
@@ -192,6 +197,7 @@ fun GlassTubeApp() {
                     onToggleSaved = { toggleSaved(video) },
                     onClose = { selectedVideo = null }
                 )
+            }
             }
         }
     }
