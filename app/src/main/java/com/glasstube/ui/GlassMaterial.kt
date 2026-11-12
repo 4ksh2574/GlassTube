@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.Shape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -28,13 +29,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.BorderStroke
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -45,10 +46,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.chrisbanes.haze.HazeInput
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.glass.GlassStyle
+import dev.chrisbanes.haze.glass.hazeGlass
+import dev.chrisbanes.haze.hazeSource
 
 private val GlassTeal = Color(0xFF63E2D1)
 private val Ink = Color(0xFF102528)
 private val MutedInk = Color(0xFF6C8586)
+
+val LocalGlassHazeState = staticCompositionLocalOf<HazeState> {
+    error("GlassHazeState must be provided above GlassTubeApp.")
+}
 
 @Composable
 fun AmbientBackdrop(modifier: Modifier = Modifier) {
@@ -79,9 +89,8 @@ fun AmbientBackdrop(modifier: Modifier = Modifier) {
 }
 
 /**
- * A layered translucent material with a specular edge and top reflection.
- * Apple’s private renderer is not available to Android apps; this recreates the
- * visual language with native Compose drawing and remains compatible with Android 8+.
+ * Native Compose glass with adaptive depth, refraction, edge lighting and tint.
+ * Haze supplies a platform-aware renderer and a softer fallback for older Android devices.
  */
 @Composable
 fun GlassSurface(
@@ -90,31 +99,43 @@ fun GlassSurface(
     content: @Composable BoxScope.() -> Unit
 ) {
     val dark = isSystemInDarkTheme()
-    val fill = if (dark) {
-        listOf(
-            Color(0xFF274148).copy(alpha = 0.72f),
-            Color(0xFF10262C).copy(alpha = 0.78f),
-            Color(0xFF183239).copy(alpha = 0.68f)
-        )
-    } else {
-        listOf(
-            Color.White.copy(alpha = 0.82f),
-            Color(0xFFE6F4F1).copy(alpha = 0.74f),
-            Color.White.copy(alpha = 0.66f)
-        )
+    val hazeState = LocalGlassHazeState.current
+    val style = remember(shape, dark) {
+        GlassStyle.regular.then {
+            shape(shape)
+            tint(
+                if (dark) {
+                    Color(0xFF83E9DB).copy(alpha = 0.10f)
+                } else {
+                    Color.White.copy(alpha = 0.16f)
+                }
+            )
+            specularIntensity(0.78f)
+        }
     }
     val edge = if (dark) {
-        listOf(Color.White.copy(alpha = 0.56f), GlassTeal.copy(alpha = 0.20f), Color.White.copy(alpha = 0.08f))
+        listOf(
+            Color.White.copy(alpha = 0.62f),
+            GlassTeal.copy(alpha = 0.28f),
+            Color.White.copy(alpha = 0.12f)
+        )
     } else {
-        listOf(Color.White.copy(alpha = 0.98f), Color(0xFF8ABBB5).copy(alpha = 0.34f), Color.White.copy(alpha = 0.52f))
+        listOf(
+            Color.White.copy(alpha = 0.98f),
+            Color(0xFF8ABBB5).copy(alpha = 0.36f),
+            Color.White.copy(alpha = 0.56f)
+        )
     }
 
     Box(
         modifier = modifier
             .shadow(18.dp, shape, clip = false)
+            .hazeGlass(
+                input = HazeInput.Backdrop(hazeState),
+                style = style
+            )
             .clip(shape)
-            .background(Brush.linearGradient(fill))
-            .border(BorderStroke(1.dp, Brush.linearGradient(edge)), shape)
+            .border(BorderStroke(1.dp, Brush.verticalGradient(edge)), shape)
     ) {
         Box(
             Modifier
@@ -122,9 +143,9 @@ fun GlassSurface(
                 .background(
                     Brush.verticalGradient(
                         listOf(
-                            Color.White.copy(alpha = if (dark) 0.12f else 0.48f),
+                            Color.White.copy(alpha = if (dark) 0.12f else 0.26f),
                             Color.Transparent,
-                            Color.Black.copy(alpha = if (dark) 0.10f else 0.025f)
+                            Color.Black.copy(alpha = if (dark) 0.08f else 0.018f)
                         )
                     )
                 )
