@@ -473,6 +473,7 @@ private fun VideoCard(
     onToggleSaved: () -> Unit
 ) {
     val dark = androidx.compose.foundation.isSystemInDarkTheme()
+    val hazeState = LocalGlassHazeState.current
     val interaction = remember { MutableInteractionSource() }
     GlassSurface(
         modifier = Modifier
@@ -494,7 +495,7 @@ private fun VideoCard(
                         model = video.thumbnailUrl,
                         contentDescription = video.title,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize().hazeSource(hazeState)
                     )
                 }
                 GlassSurface(
