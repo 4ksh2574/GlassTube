@@ -125,7 +125,7 @@ fun PlayerOverlay(
                               </head>
                               <body>
                                 <iframe
-                                  src="https://www.youtube.com/embed/\${video.id}?playsinline=1&rel=0"
+                                  src="https://www.youtube.com/embed/${video.id}?playsinline=1&rel=0"
                                   title="YouTube video player"
                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                   referrerpolicy="strict-origin-when-cross-origin"
