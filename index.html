@@ -3,87 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#071719">
-  <meta name="description" content="GlassTube, a calmer way to watch.">
-  <title>GlassTube</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
+  <meta http-equiv="refresh" content="0;url=./web/">
+  <title>Opening GlassTube…</title>
+  <script>window.location.replace(new URL("./web/", window.location.href).toString());</script>
+  <style>
+    :root{color-scheme:dark}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#071719;color:#e8f5f2;font:16px system-ui,sans-serif}
+    main{padding:28px;text-align:center}a{color:#75d9c8}
+  </style>
 </head>
-<body>
-  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="GlassTube home">
-      <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.8v10.4L18 12 9 6.8Z" fill="currentColor"/></svg></span>
-      <span><strong>GlassTube</strong><small>A calmer way to watch</small></span>
-    </a>
-    <div class="top-actions">
-      <button class="icon-button" id="themeToggle" aria-label="Toggle appearance" title="Toggle appearance">◐</button>
-      <button class="icon-button" id="settingsButton" aria-label="API settings" title="YouTube API settings">⚙</button>
-    </div>
-  </header>
-
-  <main class="shell">
-    <section class="intro">
-      <div class="eyebrow">DISCOVER</div>
-      <h1>Find your next<br>favourite video.</h1>
-      <p>A quieter surface. The same YouTube library.</p>
-      <div class="quick-topics">
-        <button class="topic" data-query="music">Music</button>
-        <button class="topic" data-query="gaming">Gaming</button>
-        <button class="topic" data-query="learning">Learning</button>
-      </div>
-    </section>
-
-    <section id="searchPanel" class="search-panel glass hidden">
-      <form id="searchForm">
-        <span class="search-symbol">⌕</span>
-        <input id="searchInput" type="search" placeholder="Search videos..." autocomplete="off" aria-label="Search videos">
-        <button class="search-submit" type="submit">Search</button>
-      </form>
-    </section>
-
-    <div class="section-heading">
-      <div><span class="eyebrow" id="sectionEyebrow">FOR YOU</span><h2 id="sectionTitle">Popular in India</h2></div>
-      <button class="icon-button small" id="refreshButton" title="Refresh videos" aria-label="Refresh videos">↻</button>
-    </div>
-
-    <div id="status" class="notice glass hidden"></div>
-    <div id="videoGrid" class="video-grid" aria-live="polite"></div>
-    <div id="emptyLibrary" class="notice glass hidden">
-      <strong>Your library is empty</strong>
-      <p>Save a video and it will stay here on this device.</p>
-    </div>
-  </main>
-
-  <nav class="dock glass" aria-label="Main navigation">
-    <button class="dock-item active" data-page="home"><span>⌂</span><small>Home</small></button>
-    <button class="dock-item" data-page="search"><span>⌕</span><small>Search</small></button>
-    <button class="dock-item" data-page="library"><span>▤</span><small>Library</small></button>
-  </nav>
-
-  <div class="overlay hidden" id="playerOverlay" role="dialog" aria-modal="true" aria-label="Video player">
-    <div class="player-sheet glass">
-      <div class="sheet-top"><span class="eyebrow">NOW PLAYING</span><button class="icon-button" id="closePlayer" aria-label="Close player">×</button></div>
-      <div class="player-frame"><iframe id="playerFrame" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-      <div class="player-meta"><div><h2 id="playerTitle"></h2><p id="playerChannel"></p></div><button class="save-button" id="playerSave">＋ Save</button></div>
-      <p class="player-description" id="playerDescription"></p>
-    </div>
-  </div>
-
-  <div class="overlay hidden" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-    <div class="settings-sheet glass">
-      <div class="sheet-top"><div><span class="eyebrow">CONNECTION</span><h2 id="settingsTitle">YouTube API</h2></div><button class="icon-button" id="closeSettings" aria-label="Close settings">×</button></div>
-      <p>Enter a YouTube Data API v3 key to enable discovery and search. It is stored only in this browser, never in the repository.</p>
-      <label class="field-label" for="apiKeyInput">API key</label>
-      <input id="apiKeyInput" class="key-input" type="password" placeholder="Paste your web-restricted API key" autocomplete="off">
-      <div class="settings-actions"><button class="text-button" id="clearKey">Clear key</button><button class="primary-button" id="saveKey">Save on this device</button></div>
-      <small class="security-note">Use a separate key restricted to YouTube Data API v3 and this website's HTTP referrer. Browser keys are visible to the browser, so never use an unrestricted key.</small>
-      <p id="settingsStatus" class="settings-status" role="status"></p>
-    </div>
-  </div>
-
-  <script src="./app.js"></script>
-</body>
+<body><main><p>Opening GlassTube…</p><a href="./web/">Continue to GlassTube</a></main></body>
 </html>
