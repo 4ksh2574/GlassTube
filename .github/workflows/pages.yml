@@ -24,14 +24,37 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Configure GlassTube web connection
+      - name: Configure and verify GlassTube web connection
         env:
           YT_API_KEY: ${{ secrets.YT_API_KEY }}
         run: |
           python3 - <<'PY'
-          import json, os
+          import json, os, urllib.parse, urllib.request, urllib.error
+          key = os.environ.get("YT_API_KEY", "").strip()
+          if not key:
+              raise SystemExit("YT_API_KEY secret is empty or unavailable. Add it in GitHub Actions secrets.")
+          params = urllib.parse.urlencode({
+              "part": "snippet",
+              "chart": "mostPopular",
+              "regionCode": "IN",
+              "maxResults": "1",
+              "key": key,
+          })
+          url = "https://www.googleapis.com/youtube/v3/videos?" + params
+          try:
+              with urllib.request.urlopen(url, timeout=20) as response:
+                  payload = json.load(response)
+          except urllib.error.HTTPError as error:
+              try:
+                  detail = json.load(error).get("error", {}).get("message", "Unknown YouTube API error")
+              except Exception:
+                  detail = "YouTube API rejected the request"
+              raise SystemExit(f"YouTube Data API check failed (HTTP {error.code}): {detail}")
+          if not payload.get("items"):
+              raise SystemExit("YouTube Data API responded successfully but returned no popular videos.")
           with open("web/config.js", "w", encoding="utf-8") as f:
-              f.write("window.GLASSTUBE_CONFIG = { apiKey: " + json.dumps(os.environ.get("YT_API_KEY", "")) + " };")
+              f.write("window.GLASSTUBE_CONFIG = { apiKey: " + json.dumps(key) + " };")
+          print("YouTube Data API check passed. Popular video discovery is available.")
           PY
       - name: Upload web site
         uses: actions/upload-pages-artifact@v3
