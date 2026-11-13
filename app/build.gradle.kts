@@ -22,7 +22,7 @@ val escapedYoutubeApiKey = youtubeApiKey
 
 android {
     namespace = "com.glasstube"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.glasstube"
