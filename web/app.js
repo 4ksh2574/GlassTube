@@ -8,8 +8,33 @@ function key(){return window.GLASSTUBE_CONFIG?.apiKey||""}
 function setStatus(message){const el=$("status");el.textContent=message;el.classList.toggle("hidden",!message)}
 function esc(value=""){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function applyTheme(){const mode=localStorage.getItem(THEME_STORAGE)||"dark";document.documentElement.classList.toggle("light",mode==="light")}
-function videoCard(v){return `<article class="video-card glass" data-id="${esc(v.id)}"><div class="thumb-wrap"><img loading="lazy" src="${esc(v.thumbnailUrl||"")}" alt=""><span class="play-bubble">▶</span></div><div class="video-info"><div class="video-title">${esc(v.title)}</div><div class="video-bottom"><span class="channel">${esc(v.channel)}</span><button class="save-mini" data-save="${esc(v.id)}" aria-label="Save video">${saved.some(x=>x.id===v.id)?"✓":"＋"}</button></div></div></article>`}
-function render(){const grid=$("videoGrid");let list=page==="library"?saved:page==="search"?results:videos;grid.innerHTML=list.map(videoCard).join("");$("emptyLibrary").classList.toggle("hidden",!(page==="library"&&!list.length));grid.classList.toggle("hidden",page==="library"&&!list.length);$("sectionTitle").textContent=page==="library"?"Saved videos":page==="search"?"Search results":"For you";$("sectionEyebrow").textContent=page==="library"?"YOUR COLLECTION":page==="search"?"EXPLORE":"YOUR WORLD";document.querySelectorAll(".dock-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));}
+function videoCard(v){
+  return `<article class="video-card" data-id="${esc(v.id)}">
+    <div class="thumb-wrap"><img loading="lazy" src="${esc(v.thumbnailUrl||"")}" alt=""><span class="play-bubble">▶</span></div>
+    <div class="video-info"><div class="video-title">${esc(v.title)}</div>
+      <div class="video-bottom"><span class="channel">${esc(v.channel)}</span>
+        <button class="save-mini" data-save="${esc(v.id)}" aria-label="Save video">${saved.some(x=>x.id===v.id)?"✓":"＋"}</button>
+      </div>
+    </div>
+  </article>`;
+}
+function render(){
+  const grid=$("videoGrid");
+  const list=page==="library"?saved:page==="search"?results:videos;
+  grid.innerHTML=list.map(videoCard).join("");
+  $("emptyLibrary").classList.toggle("hidden",!(page==="library"&&!list.length));
+  grid.classList.toggle("hidden",page==="library"&&!list.length);
+  $("sectionTitle").textContent=page==="library"?"Saved videos":page==="search"?"Search results":"Popular in India";
+  $("sectionEyebrow").textContent=page==="library"?"YOUR COLLECTION":page==="search"?"EXPLORE":"YOUR WORLD";
+  const index=["home","search","library"].indexOf(page);
+  const dock=document.querySelector(".dock");
+  if(dock)dock.style.setProperty("--active-index",String(Math.max(0,index)));
+  document.querySelectorAll(".dock-item").forEach(b=>{
+    const active=b.dataset.page===page;
+    b.classList.toggle("active",active);
+    if(active)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+  });
+}
 async function request(endpoint,params){const apiKey=key();if(!apiKey)throw new Error("Video discovery is not configured for this browser. The deployed site needs its YouTube API configuration.");const url=new URL(endpoint,API_BASE);Object.entries({...params,key:apiKey}).forEach(([k,v])=>url.searchParams.set(k,v));let res;try{res=await fetch(url)}catch{throw new Error("YouTube could not be reached. Check your connection and try again.")}const data=await res.json();if(!res.ok)throw new Error(data?.error?.message||`YouTube request failed (HTTP ${res.status}).`);return(data.items||[]).map(item=>{const sn=item.snippet||{},id=typeof item.id==="string"?item.id:item.id?.videoId,th=sn.thumbnails||{};return{id,title:sn.title||"Untitled video",channel:sn.channelTitle||"YouTube creator",description:sn.description||"",thumbnailUrl:(th.maxres||th.high||th.medium||th.default||{}).url||"",publishedAt:sn.publishedAt||""}}).filter(v=>v.id)}
 async function loadPopular(){if(loading)return;loading=true;setStatus("");$("refreshButton").textContent="…";try{videos=await request("videos",{part:"snippet",chart:"mostPopular",regionCode:"IN",maxResults:"24"});if(page==="home")render()}catch(e){setStatus(e.message)}finally{loading=false;$("refreshButton").textContent="↻"}}
 async function search(term){if(!term.trim())return;page="search";render();setStatus("Searching…");try{results=await request("search",{part:"snippet",type:"video",safeSearch:"strict",maxResults:"20",q:term.trim()});setStatus("");render()}catch(e){setStatus(e.message)}}
