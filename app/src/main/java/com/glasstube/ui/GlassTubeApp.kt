@@ -262,28 +262,24 @@ private fun HomePage(
         item {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
-                    "DISCOVER",
-                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.66f) else Color(0xFF60807C),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    letterSpacing = 1.8.sp
+                    "A REFLECTION OF YOUR WORLD",
+                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.62f) else Color(0xFF60807C),
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.6.sp
                 )
                 Text(
-                    "Find your next\nfavourite video.",
+                    "Glass.",
                     color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color(0xFF102528),
-                    fontSize = 31.sp,
-                    lineHeight = 35.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 38.sp,
+                    lineHeight = 42.sp,
+                    fontWeight = FontWeight.ExtraBold
                 )
-                Text(
-                    "A quieter surface. The same YouTube library.",
-                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.56f) else Color(0xFF66817F),
-                    fontSize = 13.sp
-                )
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 8.dp)) {
-                    GlassChip("Music", false, { onSearch("music") })
-                    GlassChip("Gaming", false, { onSearch("gaming") })
-                    GlassChip("Learning", false, { onSearch("learning") })
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 5.dp)) {
+                    GlassChip("Apple", false, { onSearch("Apple") })
+                    GlassChip("Gaming", false, { onSearch("Gaming") })
+                    GlassChip("Podcasts", false, { onSearch("Podcasts") })
+                    GlassChip("Music", false, { onSearch("Music") })
                 }
             }
         }
@@ -478,16 +474,19 @@ private fun VideoCard(
     GlassSurface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(28.dp))
+            .clip(RoundedCornerShape(22.dp))
             .clickable(interactionSource = interaction, indication = null, onClick = onClick),
-        shape = RoundedCornerShape(28.dp)
+        shape = RoundedCornerShape(22.dp)
     ) {
-        Column(Modifier.padding(10.dp)) {
+        Row(
+            modifier = Modifier.padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(16f / 9f)
-                    .clip(RoundedCornerShape(21.dp))
+                    .weight(0.95f)
+                    .aspectRatio(1.42f)
+                    .clip(RoundedCornerShape(16.dp))
                     .background(if (dark) Color(0xFF203C42) else Color(0xFFD6E8E4))
             ) {
                 if (video.thumbnailUrl.isNotBlank()) {
@@ -499,18 +498,18 @@ private fun VideoCard(
                     )
                 }
                 GlassSurface(
-                    modifier = Modifier.align(Alignment.Center).size(50.dp),
+                    modifier = Modifier.align(Alignment.Center).size(34.dp),
                     shape = CircleShape
                 ) {
                     Icon(
                         Icons.Rounded.PlayArrow,
                         contentDescription = "Play video",
                         tint = Color(0xFF3CC7B5),
-                        modifier = Modifier.align(Alignment.Center).size(30.dp)
+                        modifier = Modifier.align(Alignment.Center).size(22.dp)
                     )
                 }
                 GlassSurface(
-                    modifier = Modifier.align(Alignment.TopEnd).padding(9.dp).size(38.dp),
+                    modifier = Modifier.align(Alignment.TopEnd).padding(5.dp).size(30.dp),
                     shape = CircleShape
                 ) {
                     Box(
@@ -527,28 +526,30 @@ private fun VideoCard(
                             if (isSaved) Icons.Rounded.Bookmark else Icons.Rounded.BookmarkBorder,
                             contentDescription = if (isSaved) "Remove from library" else "Save to library",
                             tint = if (isSaved) Color(0xFF63E2D1) else if (dark) Color.White else Color(0xFF173A3D),
-                            modifier = Modifier.size(19.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                     }
                 }
             }
             Column(
-                modifier = Modifier.padding(start = 5.dp, end = 5.dp, top = 12.dp, bottom = 5.dp),
-                verticalArrangement = Arrangement.spacedBy(5.dp)
+                modifier = Modifier
+                    .weight(1.25f)
+                    .padding(start = 12.dp, end = 5.dp, top = 4.dp, bottom = 4.dp),
+                verticalArrangement = Arrangement.spacedBy(7.dp)
             ) {
                 Text(
                     video.title,
                     color = if (dark) Color.White else Color(0xFF102528),
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp,
-                    lineHeight = 20.sp,
-                    maxLines = 2,
+                    fontSize = 13.sp,
+                    lineHeight = 18.sp,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     video.channel,
-                    color = if (dark) Color.White.copy(alpha = 0.54f) else Color(0xFF66817F),
-                    fontSize = 12.sp,
+                    color = if (dark) Color.White.copy(alpha = 0.56f) else Color(0xFF66817F),
+                    fontSize = 11.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
