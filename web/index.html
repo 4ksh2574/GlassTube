@@ -3,37 +3,41 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#071719">
-  <meta name="description" content="GlassTube, a calmer way to watch.">
+  <meta name="theme-color" content="#101214">
+  <meta name="description" content="GlassTube, a reflection of your world.">
   <title>GlassTube</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=20261113-3">
 </head>
 <body>
   <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
   <header class="topbar">
     <a class="brand" href="#" aria-label="GlassTube home">
       <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.8v10.4L18 12 9 6.8Z" fill="currentColor"/></svg></span>
-      <span><strong>GlassTube</strong><small>A calmer way to watch</small></span>
+      <strong>GlassTube</strong>
     </a>
     <div class="top-actions">
       <button class="icon-button" id="themeToggle" aria-label="Toggle appearance" title="Toggle appearance">◐</button>
+      <button class="icon-button" id="topSearch" aria-label="Search videos" title="Search">⌕</button>
     </div>
   </header>
 
   <main class="shell">
     <section class="intro">
-      <div class="eyebrow">DISCOVER</div>
-      <h1>Find your next<br>favourite video.</h1>
-      <p>A quieter surface. The same YouTube library.</p>
-      <div class="quick-topics">
-        <button class="topic" data-query="music">Music</button>
-        <button class="topic" data-query="gaming">Gaming</button>
-        <button class="topic" data-query="learning">Learning</button>
-      </div>
+      <div class="eyebrow">A REFLECTION OF YOUR WORLD</div>
+      <h1>Glass<span>.</span></h1>
     </section>
+
+    <div class="category-rail" aria-label="Video categories">
+      <button class="topic active" data-query="popular videos">All</button>
+      <button class="topic" data-query="Apple">Apple</button>
+      <button class="topic" data-query="Gaming">Gaming</button>
+      <button class="topic" data-query="Podcasts">Podcasts</button>
+      <button class="topic" data-query="Technology">Tech</button>
+      <button class="topic" data-query="Music">Music</button>
+    </div>
 
     <section id="searchPanel" class="search-panel glass hidden">
       <form id="searchForm">
@@ -44,7 +48,7 @@
     </section>
 
     <div class="section-heading">
-      <div><span class="eyebrow" id="sectionEyebrow">FOR YOU</span><h2 id="sectionTitle">Popular in India</h2></div>
+      <div><span class="eyebrow" id="sectionEyebrow">YOUR WORLD</span><h2 id="sectionTitle">For you</h2></div>
       <button class="icon-button small" id="refreshButton" title="Refresh videos" aria-label="Refresh videos">↻</button>
     </div>
 
@@ -57,9 +61,9 @@
   </main>
 
   <nav class="dock glass" aria-label="Main navigation">
-    <button class="dock-item active" data-page="home"><span>⌂</span><small>Home</small></button>
-    <button class="dock-item" data-page="search"><span>⌕</span><small>Search</small></button>
-    <button class="dock-item" data-page="library"><span>▤</span><small>Library</small></button>
+    <button class="dock-item active" data-page="home" aria-label="Home"><span>⌂</span><small>Home</small></button>
+    <button class="dock-item" data-page="search" aria-label="Search"><span>⌕</span><small>Search</small></button>
+    <button class="dock-item" data-page="library" aria-label="Library"><span>▤</span><small>Library</small></button>
   </nav>
 
   <div class="overlay hidden" id="playerOverlay" role="dialog" aria-modal="true" aria-label="Video player">
@@ -71,7 +75,7 @@
     </div>
   </div>
 
-  <script src="./config.js?v=20261113-2"></script>
-  <script src="./app.js?v=20261113-2"></script>
+  <script src="./config.js?v=20261113-3"></script>
+  <script src="./app.js?v=20261113-3"></script>
 </body>
 </html>
