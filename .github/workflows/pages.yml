@@ -31,7 +31,7 @@ jobs:
           python3 - <<'PY'
           import json, os
           with open("web/config.js", "w", encoding="utf-8") as f:
-              f.write("window.GLASSTUBE_CONFIG = { apiKey: " + json.dumps(os.environ.get("YT_API_KEY", "")) + " };\\n")
+              f.write("window.GLASSTUBE_CONFIG = { apiKey: " + json.dumps(os.environ.get("YT_API_KEY", "")) + " };")
           PY
       - name: Upload web site
         uses: actions/upload-pages-artifact@v3
