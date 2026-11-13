@@ -20,7 +20,6 @@
     </a>
     <div class="top-actions">
       <button class="icon-button" id="themeToggle" aria-label="Toggle appearance" title="Toggle appearance">◐</button>
-      <button class="icon-button" id="settingsButton" aria-label="API settings" title="YouTube API settings">⚙</button>
     </div>
   </header>
 
@@ -72,18 +71,7 @@
     </div>
   </div>
 
-  <div class="overlay hidden" id="settingsOverlay" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
-    <div class="settings-sheet glass">
-      <div class="sheet-top"><div><span class="eyebrow">CONNECTION</span><h2 id="settingsTitle">YouTube API</h2></div><button class="icon-button" id="closeSettings" aria-label="Close settings">×</button></div>
-      <p>Enter a YouTube Data API v3 key to enable discovery and search. It is stored only in this browser, never in the repository.</p>
-      <label class="field-label" for="apiKeyInput">API key</label>
-      <input id="apiKeyInput" class="key-input" type="password" placeholder="Paste your web-restricted API key" autocomplete="off">
-      <div class="settings-actions"><button class="text-button" id="clearKey">Clear key</button><button class="primary-button" id="saveKey">Save on this device</button></div>
-      <small class="security-note">Use a separate key restricted to YouTube Data API v3 and this website's HTTP referrer. Browser keys are visible to the browser, so never use an unrestricted key.</small>
-      <p id="settingsStatus" class="settings-status" role="status"></p>
-    </div>
-  </div>
-
+  <script src="./config.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
