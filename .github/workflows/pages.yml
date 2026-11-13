@@ -24,6 +24,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
+      - name: Configure GlassTube web connection
+        env:
+          YT_WEB_API_KEY: ${{ secrets.YT_WEB_API_KEY }}
+        run: |
+          printf 'window.GLASSTUBE_CONFIG = { apiKey: "%s" };\\n' "$YT_WEB_API_KEY" > web/config.js
       - name: Upload web site
         uses: actions/upload-pages-artifact@v3
         with:
