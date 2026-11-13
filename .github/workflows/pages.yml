@@ -26,9 +26,13 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Configure GlassTube web connection
         env:
-          YT_WEB_API_KEY: ${{ secrets.YT_WEB_API_KEY }}
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
         run: |
-          printf 'window.GLASSTUBE_CONFIG = { apiKey: "%s" };\n' "$YT_WEB_API_KEY" > web/config.js
+          python3 - <<'PY'
+          import json, os
+          with open("web/config.js", "w", encoding="utf-8") as f:
+              f.write("window.GLASSTUBE_CONFIG = { apiKey: " + json.dumps(os.environ.get("YT_API_KEY", "")) + " };\\n")
+          PY
       - name: Upload web site
         uses: actions/upload-pages-artifact@v3
         with:
