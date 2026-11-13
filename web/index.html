@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101214">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07090a">
   <meta name="description" content="GlassTube, a reflection of your world.">
   <title>GlassTube</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=20261113-3">
+  <link rel="stylesheet" href="./styles.css?v=20261113-4">
 </head>
 <body>
   <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
@@ -23,22 +23,19 @@
       <button class="icon-button" id="topSearch" aria-label="Search videos" title="Search">⌕</button>
     </div>
   </header>
-
   <main class="shell">
     <section class="intro">
       <div class="eyebrow">A REFLECTION OF YOUR WORLD</div>
-      <h1>Glass<span>.</span></h1>
+      <h1>For you<span>.</span></h1>
     </section>
-
     <div class="category-rail" aria-label="Video categories">
       <button class="topic active" data-query="popular videos">All</button>
       <button class="topic" data-query="Apple">Apple</button>
-      <button class="topic" data-query="Gaming">Gaming</button>
-      <button class="topic" data-query="Podcasts">Podcasts</button>
       <button class="topic" data-query="Technology">Tech</button>
+      <button class="topic" data-query="Gaming">Gaming</button>
       <button class="topic" data-query="Music">Music</button>
+      <button class="topic" data-query="Podcasts">Podcasts</button>
     </div>
-
     <section id="searchPanel" class="search-panel glass hidden">
       <form id="searchForm">
         <span class="search-symbol">⌕</span>
@@ -46,12 +43,10 @@
         <button class="search-submit" type="submit">Search</button>
       </form>
     </section>
-
     <div class="section-heading">
-      <div><span class="eyebrow" id="sectionEyebrow">YOUR WORLD</span><h2 id="sectionTitle">For you</h2></div>
+      <div><span class="eyebrow" id="sectionEyebrow">YOUR WORLD</span><h2 id="sectionTitle">Popular in India</h2></div>
       <button class="icon-button small" id="refreshButton" title="Refresh videos" aria-label="Refresh videos">↻</button>
     </div>
-
     <div id="status" class="notice glass hidden"></div>
     <div id="videoGrid" class="video-grid" aria-live="polite"></div>
     <div id="emptyLibrary" class="notice glass hidden">
@@ -59,13 +54,12 @@
       <p>Save a video and it will stay here on this device.</p>
     </div>
   </main>
-
   <nav class="dock glass" aria-label="Main navigation">
-    <button class="dock-item active" data-page="home" aria-label="Home"><span>⌂</span><small>Home</small></button>
-    <button class="dock-item" data-page="search" aria-label="Search"><span>⌕</span><small>Search</small></button>
-    <button class="dock-item" data-page="library" aria-label="Library"><span>▤</span><small>Library</small></button>
+    <span class="dock-indicator" aria-hidden="true"></span>
+    <button class="dock-item active" data-page="home" aria-label="Home"><span>⌂</span></button>
+    <button class="dock-item" data-page="search" aria-label="Search"><span>⌕</span></button>
+    <button class="dock-item" data-page="library" aria-label="Library"><span>▤</span></button>
   </nav>
-
   <div class="overlay hidden" id="playerOverlay" role="dialog" aria-modal="true" aria-label="Video player">
     <div class="player-sheet glass">
       <div class="sheet-top"><span class="eyebrow">NOW PLAYING</span><button class="icon-button" id="closePlayer" aria-label="Close player">×</button></div>
@@ -74,8 +68,7 @@
       <p class="player-description" id="playerDescription"></p>
     </div>
   </div>
-
-  <script src="./config.js?v=20261113-3"></script>
-  <script src="./app.js?v=20261113-3"></script>
+  <script src="./config.js?v=20261113-4"></script>
+  <script src="./app.js?v=20261113-4"></script>
 </body>
 </html>
