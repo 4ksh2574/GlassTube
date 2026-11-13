@@ -237,7 +237,7 @@ private fun AppTopBar(onSearch: () -> Unit) {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    "A calmer way to watch",
+                    "A reflection of your world",
                     color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.52f) else Color(0xFF66817F),
                     fontSize = 11.sp
                 )
@@ -492,23 +492,23 @@ private fun VideoCard(
     val dark = androidx.compose.foundation.isSystemInDarkTheme()
     val hazeState = LocalGlassHazeState.current
     val interaction = remember { MutableInteractionSource() }
-    GlassSurface(
+
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(22.dp))
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
-        shape = RoundedCornerShape(22.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
     ) {
         Row(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(vertical = 9.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
                     .weight(0.95f)
-                    .aspectRatio(1.42f)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(if (dark) Color(0xFF203C42) else Color(0xFFD6E8E4))
+                    .aspectRatio(16f / 9f)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(if (dark) Color(0xFF203033) else Color(0xFFDCE8E6))
             ) {
                 if (video.thumbnailUrl.isNotBlank()) {
                     AsyncImage(
@@ -576,6 +576,12 @@ private fun VideoCard(
                 )
             }
         }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(if (dark) Color.White.copy(alpha = 0.10f) else Color(0xFF102528).copy(alpha = 0.10f))
+        )
     }
 }
 
