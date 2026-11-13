@@ -1,6 +1,14 @@
 package com.glasstube.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.border
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -254,32 +262,56 @@ private fun HomePage(
     onRefresh: () -> Unit,
     onSearch: (String) -> Unit
 ) {
+    val dark = androidx.compose.foundation.isSystemInDarkTheme()
+    val topics = remember { listOf("All", "Apple", "Technology", "Gaming", "Music", "Podcasts") }
+    var activeTopic by remember { mutableStateOf("All") }
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 118.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 10.dp, bottom = 112.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    "A REFLECTION OF YOUR WORLD",
-                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White.copy(alpha = 0.62f) else Color(0xFF60807C),
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.6.sp
-                )
-                Text(
-                    "Glass.",
-                    color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color(0xFF102528),
-                    fontSize = 38.sp,
-                    lineHeight = 42.sp,
-                    fontWeight = FontWeight.ExtraBold
-                )
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 5.dp)) {
-                    GlassChip("Apple", false, { onSearch("Apple") })
-                    GlassChip("Gaming", false, { onSearch("Gaming") })
-                    GlassChip("Podcasts", false, { onSearch("Podcasts") })
-                    GlassChip("Music", false, { onSearch("Music") })
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                        Text(
+                            "YOUR WORLD",
+                            color = if (dark) Color.White.copy(alpha = 0.56f) else Color(0xFF66817F),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.7.sp
+                        )
+                        Text(
+                            "For you",
+                            color = if (dark) Color.White else Color(0xFF102528),
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = (-0.7).sp
+                        )
+                    }
+                    Box(Modifier.weight(1f))
+                    GlassIconButton(
+                        icon = Icons.Rounded.Refresh,
+                        contentDescription = "Refresh videos",
+                        onClick = onRefresh,
+                        size = 38.dp
+                    )
+                }
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(topics, key = { it }) { topic ->
+                        GlassChip(
+                            label = topic,
+                            selected = activeTopic == topic,
+                            onClick = {
+                                activeTopic = topic
+                                if (topic == "All") onRefresh() else onSearch(topic.lowercase())
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -301,31 +333,20 @@ private fun HomePage(
             item {
                 GlassNotice(
                     title = "Your feed is ready",
-                    body = "Search for a topic or choose one of the quick topics above to start exploring."
+                    body = "Choose a topic above or search for something to start exploring."
                 )
             }
         }
 
         if (videos.isNotEmpty()) {
             item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        "Popular in India",
-                        color = if (androidx.compose.foundation.isSystemInDarkTheme()) Color.White else Color(0xFF102528),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    GlassIconButton(
-                        icon = Icons.Rounded.Refresh,
-                        contentDescription = "Refresh feed",
-                        onClick = onRefresh,
-                        size = 38.dp
-                    )
-                }
+                Text(
+                    "Popular in India",
+                    color = if (dark) Color.White else Color(0xFF102528),
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 1.dp, bottom = 1.dp)
+                )
             }
             items(videos, key = { it.id }) { video ->
                 VideoCard(
@@ -587,17 +608,42 @@ private fun GlassDock(
     onSelect: (AppPage) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val dark = androidx.compose.foundation.isSystemInDarkTheme()
     GlassSurface(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(34.dp)
+        modifier = modifier.width(258.dp).height(62.dp),
+        shape = RoundedCornerShape(40.dp)
     ) {
-        Row(
-            modifier = Modifier.padding(7.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxSize().padding(6.dp)
         ) {
-            DockItem(AppPage.Home, Icons.Rounded.Home, selected == AppPage.Home, onSelect, Modifier.weight(1f))
-            DockItem(AppPage.Search, Icons.Rounded.Search, selected == AppPage.Search, onSelect, Modifier.weight(1f))
-            DockItem(AppPage.Library, Icons.Rounded.VideoLibrary, selected == AppPage.Library, onSelect, Modifier.weight(1f))
+            val itemWidth = maxWidth / 3
+            val activeOffset by animateDpAsState(
+                targetValue = itemWidth * selected.ordinal.toFloat(),
+                animationSpec = spring(dampingRatio = 0.72f, stiffness = 390f),
+                label = "glassDockLens"
+            )
+            Box(
+                modifier = Modifier
+                    .offset(x = activeOffset)
+                    .width(itemWidth)
+                    .height(50.dp)
+                    .padding(horizontal = 2.dp, vertical = 1.dp)
+                    .clip(CircleShape)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(
+                                Color.White.copy(alpha = if (dark) 0.28f else 0.82f),
+                                Color.White.copy(alpha = if (dark) 0.08f else 0.42f)
+                            )
+                        )
+                    )
+                    .border(1.dp, Color.White.copy(alpha = if (dark) 0.34f else 0.84f), CircleShape)
+            )
+            Row(modifier = Modifier.fillMaxSize()) {
+                DockItem(AppPage.Home, Icons.Rounded.Home, selected == AppPage.Home, onSelect, Modifier.weight(1f))
+                DockItem(AppPage.Search, Icons.Rounded.Search, selected == AppPage.Search, onSelect, Modifier.weight(1f))
+                DockItem(AppPage.Library, Icons.Rounded.VideoLibrary, selected == AppPage.Library, onSelect, Modifier.weight(1f))
+            }
         }
     }
 }
@@ -612,26 +658,24 @@ private fun DockItem(
 ) {
     val dark = androidx.compose.foundation.isSystemInDarkTheme()
     val interaction = remember { MutableInteractionSource() }
-    Column(
+    Box(
         modifier = modifier
-            .height(54.dp)
+            .height(50.dp)
             .clip(CircleShape)
-            .background(if (selected) Color(0xFF63E2D1).copy(alpha = if (dark) 0.20f else 0.35f) else Color.Transparent)
             .clickable(interactionSource = interaction, indication = null) { onSelect(page) },
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             icon,
             contentDescription = page.label,
-            tint = if (selected) Color(0xFF42BFB0) else if (dark) Color.White.copy(alpha = 0.68f) else Color(0xFF466766),
-            modifier = Modifier.size(20.dp)
-        )
-        Text(
-            page.label,
-            color = if (selected) Color(0xFF42BFB0) else if (dark) Color.White.copy(alpha = 0.68f) else Color(0xFF466766),
-            fontSize = 10.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
+            tint = if (selected) {
+                if (dark) Color.White else Color(0xFF176E68)
+            } else if (dark) {
+                Color.White.copy(alpha = 0.68f)
+            } else {
+                Color(0xFF466766)
+            },
+            modifier = Modifier.size(22.dp)
         )
     }
 }
