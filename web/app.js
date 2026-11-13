@@ -28,7 +28,11 @@ function render(){
   $("sectionEyebrow").textContent=page==="library"?"YOUR COLLECTION":page==="search"?"EXPLORE":"YOUR WORLD";
   const index=["home","search","library"].indexOf(page);
   const dock=document.querySelector(".dock");
-  if(dock)dock.style.setProperty("--active-index",String(Math.max(0,index)));
+  if(dock){
+    const itemWidth=(dock.clientWidth-12)/3;
+    dock.style.setProperty("--active-width",itemWidth+"px");
+    dock.style.setProperty("--active-offset",(Math.max(0,index)*itemWidth)+"px");
+  }
   document.querySelectorAll(".dock-item").forEach(b=>{
     const active=b.dataset.page===page;
     b.classList.toggle("active",active);
@@ -49,4 +53,5 @@ $("closePlayer").addEventListener("click",closePlayer);
 $("playerOverlay").addEventListener("click",e=>{if(e.target===$("playerOverlay"))closePlayer()});
 $("playerSave").addEventListener("click",()=>selected&&toggleSave(selected));
 $("themeToggle").addEventListener("click",()=>{localStorage.setItem(THEME_STORAGE,document.documentElement.classList.contains("light")?"dark":"light");applyTheme()});
+window.addEventListener("resize",()=>render());
 applyTheme();render();loadPopular();
