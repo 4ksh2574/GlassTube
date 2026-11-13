@@ -46,10 +46,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.chrisbanes.haze.HazeInput
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.glass.GlassStyle
-import dev.chrisbanes.haze.glass.hazeGlass
+import dev.chrisbanes.haze.HazeTint
+import dev.chrisbanes.haze.hazeEffect
 import dev.chrisbanes.haze.hazeSource
 
 private val GlassTeal = Color(0xFF63E2D1)
@@ -100,18 +99,10 @@ fun GlassSurface(
 ) {
     val dark = isSystemInDarkTheme()
     val hazeState = LocalGlassHazeState.current
-    val style = remember(shape, dark) {
-        GlassStyle.regular.then {
-            shape(shape)
-            tint(
-                if (dark) {
-                    Color(0xFF83E9DB).copy(alpha = 0.10f)
-                } else {
-                    Color.White.copy(alpha = 0.16f)
-                }
-            )
-            specularIntensity(0.78f)
-        }
+    val hazeTint = if (dark) {
+        Color(0xFF0D292D).copy(alpha = 0.22f)
+    } else {
+        Color.White.copy(alpha = 0.30f)
     }
     val edge = if (dark) {
         listOf(
@@ -130,10 +121,11 @@ fun GlassSurface(
     Box(
         modifier = modifier
             .shadow(18.dp, shape, clip = false)
-            .hazeGlass(
-                input = HazeInput.Backdrop(hazeState),
-                style = style
-            )
+            .hazeEffect(state = hazeState) {
+                blurRadius = 22.dp
+                tints = listOf(HazeTint(hazeTint))
+                noiseFactor = 0.10f
+            }
             .clip(shape)
             .border(BorderStroke(1.dp, Brush.verticalGradient(edge)), shape)
     ) {
