@@ -23,5 +23,4 @@ $("closePlayer").addEventListener("click",closePlayer);
 $("playerOverlay").addEventListener("click",e=>{if(e.target===$("playerOverlay"))closePlayer()});
 $("playerSave").addEventListener("click",()=>selected&&toggleSave(selected));
 $("themeToggle").addEventListener("click",()=>{localStorage.setItem(THEME_STORAGE,document.documentElement.classList.contains("light")?"dark":"light");applyTheme()});
-$("settingsOverlay").addEventListener("click",e=>{if(e.target===$("settingsOverlay"))$("settingsOverlay").classList.add("hidden")});
 applyTheme();render();loadPopular();
